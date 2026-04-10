@@ -4,234 +4,108 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ismail Bzour | خدمات التصميم</title>
-    
     <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
 
     <style>
-        :root {
-            --primary: #6c5ce7;
-            --dark: #0f0c29;
-            --white: #ffffff;
-            --bg: #f8f9fd;
-            --accent: #00b894;
-            --paypal-color: #003087;
-            --reflect-color: #2ecc71;
-        }
-
+        :root { --primary: #6c5ce7; --dark: #0f0c29; --white: #ffffff; --bg: #f8f9fd; }
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Tajawal', sans-serif; }
         body { background-color: var(--bg); color: var(--dark); line-height: 1.6; }
-
-        /* --- واجهة الموقع الرئيسية --- */
-        header {
-            background: linear-gradient(135deg, var(--dark) 0%, var(--primary) 100%);
-            color: white; padding: 80px 20px; text-align: center;
-            border-bottom-left-radius: 60px; border-bottom-right-radius: 60px;
-        }
-        .admin-trigger { cursor: pointer; user-select: none; display: inline-block; }
-        
+        header { background: linear-gradient(135deg, var(--dark) 0%, var(--primary) 100%); color: white; padding: 60px 20px; text-align: center; border-bottom-left-radius: 50px; border-bottom-right-radius: 50px; }
         .container { max-width: 1100px; margin: auto; padding: 20px; }
-        .services-grid {
-            display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 25px; margin-top: -60px;
-        }
-        .card {
-            background: var(--white); border-radius: 20px; padding: 30px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.05); text-align: center;
-            transition: 0.3s; border: 1px solid rgba(0,0,0,0.02);
-        }
+        .services-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 25px; margin-top: -40px; }
+        .card { background: var(--white); border-radius: 20px; padding: 30px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); text-align: center; transition: 0.3s; }
         .card:hover { transform: translateY(-10px); }
         .card i { font-size: 50px; color: var(--primary); margin-bottom: 20px; }
-        .btn-order {
-            background: var(--primary); color: white; padding: 12px 25px;
-            border-radius: 50px; border: none; font-size: 16px; cursor: pointer;
-            width: 100%; font-weight: bold; margin-top: 15px;
-        }
-
-        /* --- لوحة الإدارة (مخفية) --- */
-        #adminPanel { display: none; padding: 40px 20px; animation: fadeIn 0.5s; }
-        .admin-box { background: white; border-radius: 20px; padding: 30px; box-shadow: 0 10px 40px rgba(0,0,0,0.1); }
-        .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 20px; margin-bottom: 30px; }
-        .stat-item { padding: 20px; background: #f9f9f9; border-radius: 15px; text-align: center; }
-        .stat-item b { font-size: 24px; color: var(--primary); display: block; }
-
-        /* --- نوافذ منبثقة --- */
-        .modal {
-            display: none; position: fixed; z-index: 1000; left: 0; top: 0;
-            width: 100%; height: 100%; background: rgba(0,0,0,0.7);
-            align-items: center; justify-content: center; backdrop-filter: blur(5px);
-        }
+        .btn-order { background: var(--primary); color: white; padding: 12px 25px; border-radius: 50px; border: none; font-size: 16px; cursor: pointer; width: 100%; font-weight: bold; margin-top: 15px; }
+        .modal { display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); align-items: center; justify-content: center; backdrop-filter: blur(5px); }
         .modal-content { background: white; padding: 30px; border-radius: 25px; width: 90%; max-width: 400px; text-align: center; position: relative; }
-        .payment-opt {
-            display: flex; align-items: center; justify-content: space-between;
-            padding: 15px; border: 2px solid #eee; border-radius: 15px;
-            margin-bottom: 15px; cursor: pointer; transition: 0.3s; font-weight: bold;
-        }
-        .payment-opt:hover { border-color: var(--primary); background: #fcfbff; }
-
-        #loginOverlay { background: var(--dark); color: white; flex-direction: column; }
-        .login-input { padding: 12px; border-radius: 10px; border: none; margin: 20px 0; width: 80%; text-align: center; font-size: 18px; }
-
-        footer { text-align: center; padding: 40px; color: #888; font-size: 14px; }
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        .payment-opt { display: flex; align-items: center; justify-content: space-between; padding: 15px; border: 2px solid #eee; border-radius: 15px; margin-bottom: 15px; cursor: pointer; font-weight: bold; }
+        .admin-box { background: white; border-radius: 20px; padding: 30px; margin-top: 20px; box-shadow: 0 10px 40px rgba(0,0,0,0.1); }
+        #adminPanel { display: none; }
+        footer { text-align: center; padding: 40px; color: #888; }
     </style>
 </head>
 <body>
 
 <div id="mainSite">
     <header>
-        <div class="admin-trigger" ondblclick="showLogin()">
-            <h1>Ismail Bzour</h1>
-        </div>
+        <h1 onclick="handleHeaderClick()" style="cursor: pointer;">Ismail Bzour</h1>
         <p>تصاميم إبداعية بمواصفات عالمية</p>
     </header>
-
     <div class="container">
         <div class="services-grid">
-            <div class="card">
-                <i class="fas fa-pen-nib"></i>
-                <h3>تصميم شعار</h3>
-                <p>لوجو احترافي يعبر عن هويتك.</p>
-                <button class="btn-order" onclick="openOrder('تصميم شعار')">اطلب الآن</button>
-            </div>
-            <div class="card">
-                <i class="fas fa-video"></i>
-                <h3>تصميم انترو فيديو</h3>
-                <p>مقدمة فيديو سينمائية لأعمالك.</p>
-                <button class="btn-order" onclick="openOrder('تصميم انترو فيديو')">اطلب الآن</button>
-            </div>
-            <div class="card">
-                <i class="fas fa-microscope"></i>
-                <h3>دراسة وتحليل شعار</h3>
-                <p>تحسين وتطوير شعارك الحالي.</p>
-                <button class="btn-order" onclick="openOrder('دراسة وتحليل شعار')">اطلب الآن</button>
-            </div>
-            <div class="card">
-                <i class="fas fa-magic"></i>
-                <h3>تحويل سكيتش لشعار</h3>
-                <p>نحول رسمك اليدوي لتصميم رقمي.</p>
-                <button class="btn-order" onclick="openOrder('تحويل سكيتش لشعار')">اطلب الآن</button>
-            </div>
+            <div class="card"><i class="fas fa-pen-nib"></i><h3>تصميم شعار</h3><button class="btn-order" onclick="openOrder('تصميم شعار')">اطلب الآن</button></div>
+            <div class="card"><i class="fas fa-video"></i><h3>تصميم انترو فيديو</h3><button class="btn-order" onclick="openOrder('تصميم انترو فيديو')">اطلب الآن</button></div>
+            <div class="card"><i class="fas fa-microscope"></i><h3>دراسة وتحليل شعار</h3><button class="btn-order" onclick="openOrder('دراسة وتحليل شعار')">اطلب الآن</button></div>
+            <div class="card"><i class="fas fa-magic"></i><h3>تحويل سكيتش لشعار</h3><button class="btn-order" onclick="openOrder('تحويل سكيتش لشعار')">اطلب الآن</button></div>
         </div>
     </div>
 </div>
 
 <div id="adminPanel" class="container">
     <div class="admin-box">
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-            <h2>لوحة تحكم إسماعيل</h2>
-            <button onclick="logout()" class="btn-order" style="width: auto; background: #ff7675;">خروج</button>
-        </div>
-        
-        <div class="stats">
-            <div class="stat-item"><b>150</b> زوار الموقع</div>
-            <div class="stat-item"><b>12</b> طلبات اليوم</div>
-            <div class="stat-item"><b>$340</b> أرباح متوقعة</div>
-        </div>
+        <h2>لوحة تحكم إسماعيل (تجريبية)</h2>
+        <hr><br>
+        <p><b>زوار اليوم:</b> 15 شخص</p>
+        <p><b>الطلبات الأخيرة:</b> لا توجد طلبات جديدة</p>
+        <button onclick="location.reload()" class="btn-order" style="background:#ff7675; width:auto;">تسجيل خروج</button>
+    </div>
+</div>
 
-        <h3 style="margin-bottom: 15px;">إدارة الخدمات والأسعار</h3>
-        <table style="width: 100%; text-align: right; border-collapse: collapse;">
-            <tr style="background: #eee;">
-                <th style="padding: 10px;">الخدمة</th>
-                <th>السعر</th>
-                <th>الإجراء</th>
-            </tr>
-            <tr>
-                <td style="padding: 10px;">تصميم شعار</td>
-                <td><input type="text" value="$25" style="width: 50px;"></td>
-                <td><button class="btn-order" style="width: auto; padding: 5px 10px;">حفظ</button></td>
-            </tr>
-        </table>
-        <br>
-        <h3>أرقام تواصلت معك (WhatsApp)</h3>
-        <p style="color: #666; font-size: 14px;">+972 56 976 0078 (طلب لوجو)</p>
-        <p style="color: #666; font-size: 14px;">+972 59 XXX XXXX (تحليل شعار)</p>
+<div id="loginModal" class="modal">
+    <div class="modal-content">
+        <h3>دخول الإدارة</h3>
+        <input type="password" id="passInput" style="width:100%; padding:10px; margin:20px 0; text-align:center;" placeholder="أدخل الرمز">
+        <button class="btn-order" onclick="checkAuth()">دخول</button>
     </div>
 </div>
 
 <div id="paymentModal" class="modal">
     <div class="modal-content">
-        <span style="position: absolute; top: 10px; right: 20px; cursor: pointer; font-size: 24px;" onclick="closeModals()">&times;</span>
-        <h3 id="serviceNameLabel" style="margin-bottom: 20px;"></h3>
-        <div class="payment-opt" onclick="sendOrder('PayPal')">
-            <span>باي بال (PayPal)</span> <i class="fab fa-paypal" style="color: var(--paypal-color);"></i>
-        </div>
-        <div class="payment-opt" onclick="sendOrder('Reflect')">
-            <span>ريفلكت (Reflect)</span> <i class="fas fa-wallet" style="color: var(--reflect-color);"></i>
-        </div>
+        <h3 id="servTitle"></h3><br>
+        <div class="payment-opt" onclick="finish('باي بال')">باي بال <span>alshaqi2015@gmail.com</span></div>
+        <div class="payment-opt" onclick="finish('ريفلكت')">ريفلكت <span>0569760078</span></div>
     </div>
 </div>
-
-<div id="loginOverlay" class="modal">
-    <div class="modal-content" style="background: #1a1a2e; color: white;">
-        <h3>دخول الإدارة</h3>
-        <input type="password" id="adminPass" class="login-input" placeholder="كلمة المرور">
-        <button class="btn-order" onclick="checkPass()">دخول</button>
-        <button onclick="closeModals()" style="background: none; border: none; color: #888; margin-top: 10px; cursor: pointer;">إلغاء</button>
-    </div>
-</div>
-
-<footer>
-    جميع الحقوق محفوظة © Ismail Bzour 2026
-</footer>
 
 <script>
-    let currentService = "";
+    let clickCount = 0;
+    let selectedServ = "";
 
-    // فتح نافذة الطلب
-    function openOrder(name) {
-        currentService = name;
-        document.getElementById('serviceNameLabel').innerText = "اطلب " + name;
+    // الدخول للوحة التحكم عند الضغط 3 مرات على الاسم
+    function handleHeaderClick() {
+        clickCount++;
+        if (clickCount === 3) {
+            document.getElementById('loginModal').style.display = 'flex';
+            clickCount = 0;
+        }
+    }
+
+    function checkAuth() {
+        const p = document.getElementById('passInput').value;
+        // البصمة الصحيحة لـ 900800 باستخدام MD5
+        const h = CryptoJS.MD5(p).toString();
+        if (h === "7f7062400b86a8a071578f793b58498b") {
+            document.getElementById('loginModal').style.display = 'none';
+            document.getElementById('mainSite').style.display = 'none';
+            document.getElementById('adminPanel').style.display = 'block';
+        } else {
+            alert("الرمز خطأ!");
+        }
+    }
+
+    function openOrder(s) {
+        selectedServ = s;
+        document.getElementById('servTitle').innerText = s;
         document.getElementById('paymentModal').style.display = 'flex';
     }
 
-    // إرسال الطلب للواتساب
-    function sendOrder(method) {
-        const myPhone = "972569760078";
-        const paypalEmail = "alshaqi2015@gmail.com";
-        const reflectNum = "0569760078";
-        
-        let details = method === 'PayPal' ? `باي بال (${paypalEmail})` : `ريفلكت (${reflectNum})`;
-        let msg = `مرحباً إسماعيل، أريد طلب خدمة: *${currentService}*%0Aطريقة الدفع: *${details}*`;
-        
-        window.location.href = `https://wa.me/${myPhone}?text=${msg}`;
-    }
-
-    // إدارة الدخول
-    function showLogin() { document.getElementById('loginOverlay').style.display = 'flex'; }
-    function closeModals() { 
-        document.getElementById('paymentModal').style.display = 'none'; 
-        document.getElementById('loginOverlay').style.display = 'none'; 
-    }
-
-    function checkPass() {
-        const pass = document.getElementById('adminPass').value;
-        // البصمة المشفرة لـ 900800
-        const hash = CryptoJS.MD5(pass).toString();
-        if (hash === "7f7062400b86a8a071578f793b58498b") {
-            document.getElementById('loginOverlay').style.display = 'none';
-            document.getElementById('mainSite').style.display = 'none';
-            document.getElementById('adminPanel').style.display = 'block';
-            sessionStorage.setItem('isIsmail', 'true');
-        } else {
-            alert("عذراً، الرمز غير صحيح!");
-        }
-    }
-
-    function logout() {
-        sessionStorage.removeItem('isIsmail');
-        location.reload();
-    }
-
-    // التحقق من الجلسة عند التحميل
-    window.onload = function() {
-        if(sessionStorage.getItem('isIsmail') === 'true') {
-            document.getElementById('mainSite').style.display = 'none';
-            document.getElementById('adminPanel').style.display = 'block';
-        }
+    function finish(m) {
+        const msg = `مرحباً إسماعيل، أريد طلب: ${selectedServ} عبر ${m}`;
+        window.location.href = `https://wa.me/972569760078?text=${encodeURIComponent(msg)}`;
     }
 </script>
-
 </body>
 </html>
